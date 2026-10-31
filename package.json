@@ -1,0 +1,14 @@
+{
+  "name": "derivatives-notebook",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A self-study notebook for derivatives (forwards, futures, options, swaps) for beginners: short lessons, guided drills and spaced review.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "Ziyi Zhou",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "serve": "python3 -m http.server 8000"
+  },
+  "engines": { "node": ">=20" }
+}
