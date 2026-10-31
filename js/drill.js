@@ -27,7 +27,7 @@ export function rng(seed = 1) {
   };
 }
 
-/* Is the learner's input right? Numbers are compared with the tolerance, choices by index. */
+/* Is the learner's input right? Kept for the tests; the app uses js/grade.js. */
 export function isCorrect(problem, input) {
   if (problem.kind === 'choice') return Number(input) === problem.answer;
   const x = Number(String(input).replace(/,/g, '').trim());
@@ -46,6 +46,7 @@ export function shuffleChoice(problem, r) {
   return {
     ...problem,
     options: idx.map(i => problem.options[i]),
+    explain: problem.explain ? idx.map(i => problem.explain[i] ?? null) : undefined,
     answer: idx.indexOf(problem.answer),
   };
 }
