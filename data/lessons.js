@@ -542,7 +542,7 @@ export const lessons = [
     no: 8,
     zh: '二叉树定价',
     en: 'Binomial trees',
-    ref: 'Hull 第 13 章',
+    ref: 'Hull 第 11 章',
     intro: [
       '二叉树（binomial tree）把时间切成小段，每段里标的只有两种走法：涨到 $Su$ 或跌到 $Sd$。',
       '关键技巧是风险中性定价：假装所有人都不在乎风险，把概率换成一个"风险中性概率" $p$，然后按无风险利率贴现。这样算出的价格与真实市场一致。',
