@@ -36,6 +36,7 @@ function normalizeWithBreaks(s) {
   return String(s)
     .normalize('NFKC')
     .toLowerCase()
+    .replace(/(\d)[.,](?=\d)/g, '$1') // 6.5 and 1,000 are numbers, not clause breaks (normalize drops the mark too)
     .replace(/[，。；！？,.;!?、：:\n]+/g, '|')
     .replace(/[\s\u3000()（）\[\]【】"'“”‘’\-—_\/\\*·…~`]+/g, '');
 }

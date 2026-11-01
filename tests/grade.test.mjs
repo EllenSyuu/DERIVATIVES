@@ -91,3 +91,8 @@ test('number: a percentage typed with or without % is accepted', () => {
   const q = { kind: 'number', answer: 0.045, tol: 0.0005 };
   assert.equal(gradeNumber(q, '4.5%').verdict, 'correct');
 });
+
+test('short: decimals and thousands separators in an answer still match', () => {
+  const spec = { concepts: [{ id: 'r', groups: [['6.5%']], missing: 'rate' }, { id: 'n', groups: [['1,000']], missing: 'n' }], model: 'm' };
+  assert.equal(gradeShort('利率是 6.5%，名义本金 1,000 万。', spec).verdict, 'correct');
+});
