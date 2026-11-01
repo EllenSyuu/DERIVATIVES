@@ -98,3 +98,12 @@
   .nav ol { gap: 12px; }
   .nav li:nth-child(3) { display: none; }
 }
+
+/* Long formulas scroll inside their own line on phones instead of widening the page. */
+.learn p, .recipe li, .ptext, .worked p, .feedback .points li, .feedback .model, .opt span, .drill-list .dname, .formula {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: 2px 0; }
+.learn p .katex, .recipe li .katex, .worked p .katex { white-space: nowrap; }
