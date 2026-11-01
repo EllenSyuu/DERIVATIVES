@@ -12,6 +12,10 @@ export const chapter = {
   en: 'Mechanics of futures markets',
   hull: 'Chapter 2',
   status: 'aligned',
+  formulas: [
+    { tex: '\\text{daily gain (long)} = (F_t - F_{t-1}) \\times \\text{contract size}', zh: '多头每日盯市盈亏；空头符号相反' },
+    { tex: '\\Delta F_{\\text{call}} = \\dfrac{\\text{initial} - \\text{maintenance}}{\\text{contract size}}', zh: '价格变动多少会触发追加保证金' },
+  ],
   sections: [
     {
       id: '2.1',
@@ -154,7 +158,7 @@ export const chapter = {
           {
             id: 'oi',
             ok: '未平仓合约数是尚未平掉的合约总数',
-            groups: [['未平仓', 'openinterest', '未平', '尚未平', '未结清', '持仓量', '存量'], ['合约', '数量', '总数', '数']],
+            groups: [['未平仓', 'openinterest', '未平', '尚未平', '未结清', '持仓量', '存量'], ['合约', '数量', '总数', '数目']],
             missing: '未平仓合约数是当前尚未被平掉（仍然存在）的合约总数。',
           },
           {
@@ -298,7 +302,7 @@ export const chapter = {
           {
             id: 'buyasset',
             ok: '买入现货资产',
-            groups: [['买入', '买', 'buy', '现货', 'spot', '资产', 'asset']],
+            groups: [['买入', 'buy', '现货', 'spot', '资产', 'asset']],
             missing: '第二步：在现货市场买入资产。',
           },
           {
@@ -310,7 +314,7 @@ export const chapter = {
           {
             id: 'profit',
             ok: '结果是无风险利润，等于期货价格与现货价格之差',
-            groups: [['利润', '收益', '赚', 'profit', 'gain', '无风险', 'riskless', '差']],
+            groups: [['利润', '收益', '赚钱', 'profit', 'gain', '无风险', 'riskless', '价差', '差额', '之差']],
             missing: '说明这样做的利润等于期货价格减去现货价格，而且没有风险。',
           },
         ],

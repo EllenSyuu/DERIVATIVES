@@ -4,14 +4,11 @@ The course follows Hull, *Options, Futures and Other Derivatives* (7th edition),
 chapter. Each chapter is a module in `data/`, and `data/course.js` lists all 34 chapters and
 their status.
 
-## Status
+## Adding a chapter
 
-- **aligned**: the chapter has its own module (`data/chNN.js`). Its section headings and order
-  follow the book, its examples use the book's figures, and its problems are the book's
-  end-of-chapter questions with the book's numbers, restated in our own words.
-- **pending**: the chapter only has early-version lessons in `data/lessons.js` (tagged
-  `status: 'pending'`). The site shows a notice and still offers the generated drills.
-- **todo**: no content yet.
+1. Write `data/chNN.js` (format below).
+2. `node scripts/check-chapter.mjs NN` until it prints OK.
+3. `node scripts/gen-chapters.mjs` to add it to `data/chapters.js`, then `npm test`.
 
 ## Chapter module
 
@@ -19,6 +16,7 @@ their status.
 export const chapter = {
   no: 2,
   zh: '期货市场的机制', en: 'Mechanics of futures markets', hull: 'Chapter 2', status: 'aligned',
+  formulas: [{ tex: '…', zh: '…' }],
   sections: [{ id: '2.4', zh: '每日结算与保证金', en: 'Daily settlement and margins',
                body: ['…'], examples: [{ title: '…', steps: ['…'] }] }],
   problems: [ /* see below */ ],
@@ -40,8 +38,9 @@ Every problem has `id`, `no` (the book's number), `sec` (the section it tests), 
   `model` answer. A concept counts as present when every group has at least one phrasing
   present, and a phrasing preceded by 不 / 没 / 无 / 非 (within three characters) does not count.
 
-`tests/course.test.mjs` checks that every model answer grades as correct and that a
-"不知道" answer does not. Run `npm test` after any change.
+`scripts/check-chapter.mjs` (run for every chapter by `npm test`) checks that every model
+answer grades as correct, that "不知道" and a vague answer do not, that every phrasing is at
+least two characters, and that all maths renders in KaTeX.
 
 ## Rules
 

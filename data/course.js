@@ -1,16 +1,11 @@
 /*
- * The course map: every chapter of the textbook in order, with its status.
+ * The course map: the 34 chapters of Hull, Options, Futures and Other Derivatives (7th ed.),
+ * in the book's order, grouped into parts for the contents page. A chapter is available when
+ * its module exists in data/ (listed in data/chapters.js).
  *
- *  - aligned: the chapter's sections, examples and problems follow the book.
- *  - pending: the chapter has earlier material that is not yet re-aligned with the book.
- *  - todo:    not started.
- *
- * Problems come in two forms. Fixed problems are the book's end-of-chapter questions
- * (answers are in the data). Generated drills (legacy lessons) make a fresh problem each time.
+ * Every problem is one of the book's end-of-chapter questions (see docs/content-guide.md).
  */
-import { chapter as ch1 } from './ch01.js';
-import { chapter as ch2 } from './ch02.js';
-import { lessons } from './lessons.js';
+import { CHAPTERS } from './chapters.js';
 import { rng, shuffleChoice } from '../js/drill.js';
 
 /* Hull 7th edition, chapters 1 to 34 (titles as in the book's contents). */
@@ -26,7 +21,7 @@ export const TOPICS = [
   [9, 'Properties of stock options', '股票期权的性质'],
   [10, 'Trading strategies involving options', '期权交易策略'],
   [11, 'Binomial trees', '二叉树'],
-  [12, 'Wiener processes and Itô\'s lemma', '维纳过程与伊藤引理'],
+  [12, "Wiener processes and Itô's lemma", '维纳过程与伊藤引理'],
   [13, 'The Black-Scholes-Merton model', 'Black-Scholes-Merton 模型'],
   [14, 'Derivatives markets in developing countries', '发展中国家的衍生品市场'],
   [15, 'Options on stock indices and currencies', '股指与货币期权'],
@@ -51,47 +46,42 @@ export const TOPICS = [
   [34, 'Derivatives mishaps and what we can learn from them', '衍生品事故与教训'],
 ];
 
-const ALIGNED = [ch1, ch2];
+/* Parts for the contents page. The book has no parts; this grouping is ours. */
+export const PARTS = [
+  { no: 1, en: 'Forwards, Futures and Swaps', zh: '远期、期货与互换', from: 1, to: 7, blurb: '交易所与场外市场、保证金、对冲、利率、远期定价、利率期货、互换。' },
+  { no: 2, en: 'Options', zh: '期权', from: 8, to: 11, blurb: '期权市场、期权价格的上下限与平价、组合策略、二叉树定价。' },
+  { no: 3, en: 'Pricing Models', zh: '定价模型', from: 12, to: 16, blurb: '布朗运动与伊藤引理、Black-Scholes-Merton、指数、货币与期货期权。' },
+  { no: 4, en: 'Hedging and Market Risk', zh: '对冲与市场风险', from: 17, to: 21, blurb: '希腊字母、波动率微笑、数值方法、VaR、波动率与相关系数的估计。' },
+  { no: 5, en: 'Credit', zh: '信用', from: 22, to: 23, blurb: '违约概率、信用敞口与 CVA、信用违约互换与 CDO。' },
+  { no: 6, en: 'Exotics and Advanced Models', zh: '奇异期权与进阶模型', from: 24, to: 27, blurb: '奇异期权、天气与能源衍生品、更多模型与数值方法、鞅与测度。' },
+  { no: 7, en: 'Interest Rate Derivatives', zh: '利率衍生品', from: 28, to: 32, blurb: 'Black 模型、凸性调整、短期利率模型、HJM 与 LMM、各类互换。' },
+  { no: 8, en: 'Real Options and Lessons', zh: '实物期权与教训', from: 33, to: 34, blurb: '用期权思维评估投资项目，以及衍生品事故留下的教训。' },
+];
 
-/* Legacy lessons from the first version, keyed by the Hull chapter they belong to. */
-const legacyByChapter = {};
-for (const l of lessons) (legacyByChapter[l.hull] ||= []).push(l);
+export const topic = no => TOPICS.find(t => t[0] === no) || null;
+export const partOf = no => PARTS.find(p => no >= p.from && no <= p.to);
+export const getChapter = no => CHAPTERS.find(c => c.no === no) || null;
+export const chapterStatus = no => (getChapter(no) ? 'aligned' : 'todo');
 
-export function chapterStatus(no) {
-  if (ALIGNED.some(c => c.no === no)) return 'aligned';
-  if (legacyByChapter[no]) return 'pending';
-  return 'todo';
-}
-
-export function getAligned(no) {
-  return ALIGNED.find(c => c.no === no) || null;
-}
-
-export function getLegacy(no) {
-  return legacyByChapter[no] || [];
-}
-
-/* Every problem in a chapter, as { id, sec, no, fixed?, gen? }. Book problems come first. */
+/* Every problem of a chapter, in the book's order. */
 export function problemsFor(no) {
-  const out = [];
-  const aligned = getAligned(no);
-  if (aligned) for (const p of aligned.problems) out.push({ ...p, fixed: true });
-  for (const l of getLegacy(no)) for (const d of l.drills) out.push({ id: d.id, zh: d.zh, gen: d.gen, lessonId: l.id, fixed: false });
-  return out;
+  const c = getChapter(no);
+  return c ? c.problems.map(p => ({ ...p, fixed: true, chapter: no })) : [];
 }
 
-/* Turn an entry into a concrete problem (shuffled if it is a choice). */
+/* A concrete problem to show: choice options are shuffled each time. */
 export function instantiate(item) {
-  const raw = item.fixed ? item : item.gen(rng(Math.floor(Math.random() * 2 ** 31)));
-  if (raw.kind === 'choice') return shuffleChoice(raw, rng(Math.floor(Math.random() * 2 ** 31)));
-  return raw;
+  return item.kind === 'choice' ? shuffleChoice(item, rng(Math.floor(Math.random() * 2 ** 31))) : item;
 }
 
-export const allProblemIds = () => TOPICS.flatMap(([no]) => problemsFor(no).map(p => p.id));
-export const findItem = id => {
-  for (const [no] of TOPICS) {
-    const hit = problemsFor(no).find(p => p.id === id);
-    if (hit) return { ...hit, chapter: no };
+export const allProblemIds = () => CHAPTERS.flatMap(c => c.problems.map(p => p.id));
+
+export function findItem(id) {
+  for (const c of CHAPTERS) {
+    const p = c.problems.find(x => x.id === id);
+    if (p) return { ...p, fixed: true, chapter: c.no };
   }
   return null;
-};
+}
+
+export const totalProblems = () => CHAPTERS.reduce((n, c) => n + c.problems.length, 0);

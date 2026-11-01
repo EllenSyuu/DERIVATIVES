@@ -1,36 +1,60 @@
 <!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Derivatives Notebook · 衍生品自学笔记</title>
-  <meta name="description" content="A beginner-friendly self-study notebook for derivatives: forwards, futures, options and the Black-Scholes model, with short lessons, guided drills and spaced review.">
-  <meta name="theme-color" content="#f7f2e8">
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="vendor/katex/katex.min.css">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <header class="site-head">
-    <a class="brand" href="#/">Derivatives <span>笔记</span></a>
-    <nav>
-      <a href="#/review" id="nav-review">复习</a>
-      <a href="#/formulas">公式表</a>
-    </nav>
-  </header>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Derivatives Notebook · Hull, one chapter at a time</title>
+    <meta name="description" content="A self-study notebook for Hull's Options, Futures and Other Derivatives: every chapter in the book's order, worked examples, and the end-of-chapter problems with graded answers." />
+    <meta name="theme-color" content="#f6f1e6" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="fonts/cormorant-garamond-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/notebook.css" />
+    <script defer src="vendor/katex/katex.min.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </head>
+  <body data-view="home">
+    <a class="skip" href="#app">跳到正文</a>
+    <header class="nav">
+      <a class="logo" href="#/" aria-label="Derivatives Notebook, home"><span class="mono">Derivatives</span><i>notebook</i></a>
+      <nav aria-label="Main">
+        <ol>
+          <li><a href="#/" data-scroll="chapters">Chapters</a></li>
+          <li><a href="#/review" id="nav-review">Review</a></li>
+          <li><a href="#/formulas">Formulas</a></li>
+        </ol>
+      </nav>
+      <a class="home-link" href="https://ellensyuu.github.io/">Ziyi Zhou <span aria-hidden="true">↗</span></a>
+    </header>
 
-  <main id="app" aria-live="polite">
-    <p class="loading">正在加载…</p>
-  </main>
+    <main id="app" tabindex="-1">
+      <noscript><p style="padding: 160px 24px">Derivatives Notebook needs JavaScript to run.</p></noscript>
+    </main>
 
-  <footer class="site-foot">
-    <p>原创讲解与练习，按衍生品课程的章节顺序编写。进度只保存在你这台浏览器里。</p>
-  </footer>
-
-  <script src="vendor/katex/katex.min.js"></script>
-  <script type="module" src="js/app.js"></script>
-</body>
+    <footer class="foot">
+      <p>
+        Written and drawn by <a href="https://ellensyuu.github.io/">Ziyi Zhou</a> ·
+        <a href="https://github.com/EllenSyuu/derivatives">source</a> ·
+        a study companion to Hull, <i>Options, Futures and Other Derivatives</i> (7th ed.), not affiliated with the author or publisher ·
+        progress is saved in this browser
+      </p>
+    </footer>
+    <script>
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[data-scroll]');
+        if (!a) return;
+        e.preventDefault();
+        var go = function () {
+          var el = document.getElementById(a.dataset.scroll);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+        if (location.hash !== '#/' && location.hash !== '') {
+          location.hash = '#/';
+          setTimeout(go, 120);
+        } else go();
+      });
+    </script>
+  </body>
 </html>

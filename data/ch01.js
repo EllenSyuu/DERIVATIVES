@@ -12,6 +12,12 @@ export const chapter = {
   en: 'Introduction',
   hull: 'Chapter 1',
   status: 'aligned',
+  formulas: [
+    { tex: '\\text{long forward payoff} = S_T - K', zh: '远期多头在到期时的收益（K 为交割价）' },
+    { tex: '\\text{short forward payoff} = K - S_T', zh: '远期空头在到期时的收益' },
+    { tex: '\\max(S_T - K,\\, 0)', zh: '看涨期权多头到期收益（未扣期权费）' },
+    { tex: '\\max(K - S_T,\\, 0)', zh: '看跌期权多头到期收益（未扣期权费）' },
+  ],
   sections: [
     {
       id: '1.1',
@@ -196,7 +202,7 @@ export const chapter = {
           {
             id: 'opposite',
             ok: '两者的收益正好相反',
-            groups: [['相反', 'opposite', '对立', '负', '零和', 'offset']],
+            groups: [['相反', 'opposite', '对立', '负数', '零和', 'offset']],
             missing: '说明两方的收益和亏损正好相反（一方赚，另一方亏）。',
             weight: 0.5,
           },
@@ -222,7 +228,7 @@ export const chapter = {
           {
             id: 'spec',
             ok: '投机是押注价格方向、承担风险以求利润',
-            groups: [['投机', 'speculat', '押注', '赌', '博', 'bet']],
+            groups: [['投机', 'speculat', '押注', '打赌', '赌价格', '赌方向', 'bet']],
             missing: '投机是主动押注价格的未来走向，承担风险去赚钱。',
           },
           {
@@ -391,7 +397,7 @@ export const chapter = {
           {
             id: 'spec',
             ok: '可以用于投机：如果判断价格方向，就用远期下注',
-            groups: [['投机', 'speculat', '押注', '赌', '判断', '方向']],
+            groups: [['投机', 'speculat', '押注', '打赌', '赌价格', '赌方向', '判断', '方向']],
             missing: '说明投机：如果判断价格会朝某个方向变动，就签订远期押注。',
           },
           {
@@ -476,13 +482,13 @@ export const chapter = {
           {
             id: 'fwd',
             ok: '(a) 远期：买入加元远期，锁定汇率',
-            groups: [['远期', 'forward'], ['买入', '买', 'buy', '锁定', '固定', 'long']],
+            groups: [['远期', 'forward'], ['买入', 'buy', '锁定', '固定', 'long']],
             missing: '(a) 应该签订远期合约买入加元，把汇率锁定在约定水平。',
           },
           {
             id: 'call',
             ok: '(b) 期权：买入加元看涨期权',
-            groups: [['期权', 'option', '看涨', 'call'], ['买入', '买', 'buy', '保护', '保险']],
+            groups: [['期权', 'option', '看涨', 'call'], ['买入', 'buy', '保护', '保险']],
             missing: '(b) 应该买入加元的看涨期权，给自己以执行价买入加元的权利。',
           },
           {
@@ -543,7 +549,7 @@ export const chapter = {
           {
             id: 'spec',
             ok: '投机者：押注利率变动',
-            groups: [['投机', 'speculat', '押注', '赌', '判断', '利率变动']],
+            groups: [['投机', 'speculat', '押注', '打赌', '赌价格', '赌方向', '判断', '利率变动']],
             missing: '投机者，押注利率（以及债券价格）的未来走向。',
           },
           {
@@ -569,7 +575,7 @@ export const chapter = {
           {
             id: 'zero',
             ok: '零和：一方的盈利正好等于另一方的亏损，总和为零',
-            groups: [['零和', 'zero-sum', 'zerosum', '零和游戏'], ['盈利', '赚', '收益', '亏', '亏损', '输', 'gain', 'loss', '相等', '相反', '一方']],
+            groups: [['零和', 'zero-sum', 'zerosum', '零和游戏'], ['盈利', '赚钱', '收益', '亏钱', '亏损', '输钱', 'gain', 'loss', '相等', '相反', '一方']],
             missing: '说明零和：扣除交易成本后，一方的盈利正好是另一方的亏损。',
           },
           {

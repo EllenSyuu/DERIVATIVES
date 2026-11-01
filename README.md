@@ -24,11 +24,9 @@
 
 ## 课程
 
-按 Hull《Options, Futures and Other Derivatives》（第 7 版）的章节顺序，共 34 章。
+按 Hull《Options, Futures and Other Derivatives》（第 7 版）的 34 章，按原书顺序排列。每章的小节标题和顺序与教材一致，例子用书中的数字，课后习题保留书中的题号，题目用自己的话重述。
 
-- **按教材对齐**：小节标题和顺序与教材一致，例子用书中的数字，课后习题用书中的题号。目前有第 1–2 章。
-- **待对齐**：早期版本的内容，会在之后逐章替换为按教材的版本。
-- **待编写**：还没有内容。
+网站的样式与 [FM Notebook](https://ellensyuu.github.io/FM/) 和 [ellensyuu.github.io](https://ellensyuu.github.io/) 一致：同一套字体、纸张纹理和工程图风格的图版。
 
 ## 怎么批改
 

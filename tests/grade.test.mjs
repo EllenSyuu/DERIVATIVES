@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { normalize, parseNumber, gradeNumber, gradeShort, gradeChoice } from '../js/grade.js';
-import { getAligned } from '../data/course.js';
+import { getChapter } from '../data/course.js';
 
-const ch1 = getAligned(1);
+const ch1 = getChapter(1);
 const q = id => ch1.problems.find(p => p.id === id);
 
 test('normalize ignores case, spaces, full-width forms and punctuation', () => {
