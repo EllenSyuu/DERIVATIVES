@@ -28,7 +28,19 @@ export function normalize(s) {
 
 const NEGATORS = ['不', '没', '无', '非', '未', 'not', 'no'];
 
-/* Does `phrase` occur in `text` with no negator in the three characters before it? */
+/* Words that start with a negator but do not negate what follows. */
+const NOT_NEGATION = ['不变', '不同', '不仅', '不断', '不少', '不管', '不论', '无论', '非常', '未来', '无风险', '非线性', 'note', 'notice', 'nor', 'now', 'non'];
+
+/* Like normalize, but sentence punctuation becomes a "|" break, so negation never reaches across it. */
+function normalizeWithBreaks(s) {
+  return String(s)
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/[，。；！？,.;!?、：:\n]+/g, '|')
+    .replace(/[\s\u3000()（）\[\]【】"'“”‘’\-—_\/\\*·…~`]+/g, '');
+}
+
+/* Does `phrase` occur in `text` with no negator in the three characters before it (same clause)? */
 function hasPositive(text, phrase) {
   const p = normalize(phrase);
   if (!p) return false;
@@ -36,8 +48,19 @@ function hasPositive(text, phrase) {
   for (;;) {
     const at = text.indexOf(p, from);
     if (at < 0) return false;
-    const before = text.slice(Math.max(0, at - 3), at);
-    const negated = NEGATORS.some(n => before.includes(n));
+    let before = text.slice(Math.max(0, at - 3), at);
+    const br = before.lastIndexOf('|');
+    if (br >= 0) before = before.slice(br + 1);
+    const start = at - before.length;
+    let negated = false;
+    for (const n of NEGATORS) {
+      let j = before.indexOf(n);
+      while (j >= 0) {
+        const tail = text.slice(start + j, start + j + 4);
+        if (!NOT_NEGATION.some(w => tail.startsWith(w))) negated = true;
+        j = before.indexOf(n, j + 1);
+      }
+    }
     if (!negated) return true;
     from = at + 1;
   }
@@ -108,7 +131,9 @@ export function gradeNumber(problem, raw) {
   }
   const a = problem.answer;
   const tol = problem.tol ?? Math.max(0.005, Math.abs(a) * 0.01);
-  if (near(x, a, tol)) {
+  // "52.5%" is read as 0.525; when the expected answer is in percentage points, accept 52.5 too.
+  const asTyped = /%\s*$/.test(String(raw)) ? x * 100 : x;
+  if (near(x, a, tol) || near(asTyped, a, tol)) {
     return { verdict: 'correct', score: 1, feedback: [], model: fmt(problem) };
   }
   const feedback = [];
@@ -134,8 +159,8 @@ const fmt = p => `${p.answer}${p.unit ? ' ' + p.unit : ''}`;
  * }
  */
 export function gradeShort(raw, spec) {
-  const text = normalize(raw);
-  if (text.length < 2) {
+  const text = normalizeWithBreaks(raw);
+  if (text.replace(/\|/g, '').length < 2) {
     return { verdict: 'invalid', score: 0, feedback: ['先写下你的理由，哪怕只有一句。'], model: spec.model };
   }
   const feedback = [];

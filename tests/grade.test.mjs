@@ -83,3 +83,11 @@ test('choice: the wrong option explanation is shown', () => {
   assert.equal(r.verdict, 'wrong');
   assert.ok(r.feedback[0].includes('义务'));
 });
+
+test('number: a percentage typed with or without % is accepted', () => {
+  const p = { kind: 'number', answer: -52.5, unit: '%', tol: 0.1 };
+  assert.equal(gradeNumber(p, '-52.5').verdict, 'correct');
+  assert.equal(gradeNumber(p, '-52.5%').verdict, 'correct');
+  const q = { kind: 'number', answer: 0.045, tol: 0.0005 };
+  assert.equal(gradeNumber(q, '4.5%').verdict, 'correct');
+});
